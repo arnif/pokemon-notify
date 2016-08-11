@@ -11,44 +11,38 @@ const url = 'https://pokemap.haukur.io/raw_data?pokemon=true&pokestops=true&gyms
 const alreadyNotified = [];
 
 function main() {
-    console.log('looking');
-    axios.get(url).then((response) => {
-        // console.log('response');
-        // console.log(response.data.pokemons);
-        response.data.pokemons.map((pokemon) => {
-            if (pokemon.pokemon_rarity === 'Very Rare') {
-                console.log('alreadyNotified.indexOf(pokemon.encounter_id)', alreadyNotified.indexOf(pokemon.encounter_id));
-                if (alreadyNotified.indexOf(pokemon.encounter_id) < 0) {
+  console.log('looking');
+  axios.get(url).then((response) => {
+    response.data.pokemons.map((pokemon) => {
+      if (pokemon.pokemon_rarity === 'Very Rare') {
+        console.log('alreadyNotified.indexOf(pokemon.encounter_id)', alreadyNotified.indexOf(pokemon.encounter_id));
+        if (alreadyNotified.indexOf(pokemon.encounter_id) < 0) {
 
-                    geocoder.reverseGeocode(pokemon.latitude, pokemon.longitude, function ( err, data ) {
-                        // do something with data
-                        // console.log('location', data.results[0].geometry);
-                        const location = data.results[0].formatted_address;
-                        // console.log('LLL', location);
+          geocoder.reverseGeocode(pokemon.latitude, pokemon.longitude, function ( err, data ) {
+            const location = data.results[0].formatted_address;
 
-                        const disapears = moment(pokemon.disappear_time).utcOffset(0).format('HH:mm:ss');
-                        // console.log('RARE', pokemon);
-                        // console.log(disapears);
-                        const message = `${pokemon.pokemon_name} is somewhere! Disappears at: ${disapears} @ ${location}`;
-                        PUSHOVER_USERS.forEach((user) => {
-                            sendNotification(user, message, pokemon.latitude, pokemon.longitude);
-                        });
+            const disapears = moment(pokemon.disappear_time).utcOffset(0).format('HH:mm:ss');
 
-                        alreadyNotified.push(pokemon.encounter_id);
-                    });
+            const message = `${pokemon.pokemon_name} is somewhere! Disappears at: ${disapears} @ ${location}`;
+            PUSHOVER_USERS.forEach((user) => {
+              sendNotification(user, message, pokemon.latitude, pokemon.longitude);
+            });
+
+            alreadyNotified.push(pokemon.encounter_id);
+          });
 
 
-                }
-            }
-        })
-    });
+        }
+      }
+    })
+  });
 
 }
 
 main();
 
 setInterval(() => {
-    main();
+  main();
 }, 30000);
 
 // setInterval(() => {
@@ -65,8 +59,7 @@ const sendNotification = (user, text, latitude, longitude) => {
   const msg = {
     message: text,   // required
     title: 'Pokemon',
-    url: `http://maps.google.com/maps?q=loc:${latitude},${longitude}`,
-    // url: `comgooglemaps://?saddr=&daddr=${latitude},${longitude}&directionsmode=driving`
+    url: `http://maps.google.com/maps?saddr=&daddr=${latitude},${longitude}&directionsmode=driving`,
   };
   return new Promise((resolve, reject) => {
     p.send(msg, (err, results) => {
