@@ -26,7 +26,7 @@ function main() {
                         const location = data.results[0].formatted_address;
                         // console.log('LLL', location);
 
-                        const disapears = moment(pokemon.disappear_time).format('HH:mm:ss');
+                        const disapears = moment(pokemon.disappear_time).utcOffset(0).format('HH:mm:ss');
                         // console.log('RARE', pokemon);
                         // console.log(disapears);
                         const message = `${pokemon.pokemon_name} is somewhere! Disappears at: ${disapears} @ ${location}`;
