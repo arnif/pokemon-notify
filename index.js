@@ -65,7 +65,8 @@ const sendNotification = (user, text, latitude, longitude) => {
   const msg = {
     message: text,   // required
     title: 'Pokemon',
-    url: `comgooglemaps://?saddr=&daddr=${latitude},${longitude}&directionsmode=driving`
+    url: `http://maps.google.com/maps?q=loc:${latitude},${longitude}`,
+    // url: `comgooglemaps://?saddr=&daddr=${latitude},${longitude}&directionsmode=driving`
   };
   return new Promise((resolve, reject) => {
     p.send(msg, (err, results) => {
