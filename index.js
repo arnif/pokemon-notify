@@ -8,7 +8,7 @@ const PUSHOVER_TOKEN = process.env['PUSHOVER_TOKEN'];
 
 const url = 'https://pokemap.haukur.io/raw_data?pokemon=true&pokestops=true&gyms=false&scanned=false&swLat=64.08783448918172&swLng=-22.10130761988205&neLat=64.1597555893088&neLng=-21.60692285425705&_=1470823652310'
 
-let alreadyNotified = [];
+const alreadyNotified = [];
 
 function main() {
     console.log('looking');
