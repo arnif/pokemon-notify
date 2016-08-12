@@ -8,11 +8,23 @@ const PUSHOVER_TOKEN = process.env['PUSHOVER_TOKEN'];
 
 const url = 'https://pokemap.haukur.io/raw_data?pokemon=true&pokestops=true&gyms=false&scanned=false&swLat=64.08783448918172&swLng=-22.10130761988205&neLat=64.1597555893088&neLng=-21.60692285425705&_=1470823652310'
 
+const headers = {
+  Accept: 'application/json',
+  'Content-Type': 'application/json',
+  'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36', // eslint-disable-line
+};
+
+const config = {
+  headers,
+  method: 'GET',
+  url,
+};
+
 const alreadyNotified = [];
 
 function main() {
   console.log('looking');
-  axios.get(url).then((response) => {
+  axios(config).then((response) => {
     response.data.pokemons.map((pokemon) => {
       if (pokemon.pokemon_rarity === 'Very Rare') {
         console.log('alreadyNotified.indexOf(pokemon.encounter_id)', alreadyNotified.indexOf(pokemon.encounter_id));
