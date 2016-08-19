@@ -2,7 +2,7 @@ const push = require('pushover-notifications');
 const moment = require('moment');
 const axios = require('axios');
 const geocoder = require('geocoder');
-const extraPokemons = [1, 2, 3, 4, 5, 7, 43, 93, 143, 60, 61, 62, 64, 65];
+const extraPokemons = [1, 2, 3, 4, 5, 6, 7, 25, 26, 31, 34, 38, 43, 45, 60, 61, 62, 63, 64, 65, 68, 66, 74, 78, 83, 84, 85, 89, 93, 102, 104, 109, 110, 111, 122, 128, 130, 141, 142, 143, 144, 145, 146, 147];
 const alreadyNotified = [];
 
 const PUSHOVER_USERS = process.env['POKEMON_PUSHOVER_USERS'].split(',');
@@ -10,6 +10,7 @@ const PUSHOVER_TOKEN = process.env['POKEMON_PUSHOVER_TOKEN'];
 
 const urls = [
   'https://pokemap.haukur.io/raw_data?pokemon=true&pokestops=true&gyms=false&scanned=false&swLat=64.08783448918172&swLng=-22.10130761988205&neLat=64.1597555893088&neLng=-21.60692285425705&_=1470823652310',
+  'http://10.0.1.10:5000/raw_data?pokemon=true&pokestops=false&gyms=false&scanned=false&spawnpoints=true&swLat=64.13556628031716&swLng=-21.863283640319878&neLat=64.16658924141537&neLng=-21.716856485778862&_=1471625735635'
   ];
 
 const headers = {
@@ -32,9 +33,8 @@ function main(config) {
       if (pokemon.pokemon_rarity === 'Very Rare' || pokemon.pokemon_rarity === 'Ultra Rare' || checkPokemonArray(pokemon.pokemon_id)) {
         console.log('alreadyNotified.indexOf(pokemon.encounter_id)', alreadyNotified.indexOf(pokemon.encounter_id));
         if (alreadyNotified.indexOf(pokemon.encounter_id) < 0) {
-
           geocoder.reverseGeocode(pokemon.latitude, pokemon.longitude, function ( err, data ) {
-            const location = data.results[0].formatted_address;
+            const location = data.results.length > 0 ? data.results[0].formatted_address : 'Unknown location (swipe to see)';
 
             const disapears = moment(pokemon.disappear_time).utcOffset(0).format('HH:mm:ss');
 
@@ -43,7 +43,7 @@ function main(config) {
               sendNotification(user, message, pokemon.latitude, pokemon.longitude);
             });
 
-            alreadyNotified.push(pokemon.encounter_id);
+            alreadyNotified.push(pokemon.encounter_id); // TODO change to disappear_time
           });
 
 
@@ -69,10 +69,10 @@ setInterval(() => {
 // }, 18000000);
 
 const checkPokemonArray = (pokemonId) => {
-  extraPokemons.some((id) => {
+  return extraPokemons.some((id) => {
     if(pokemonId === id) {
       return true;
-    } 
+    }
   });
   return false;
 };
