@@ -2,7 +2,7 @@ const push = require('pushover-notifications');
 const moment = require('moment');
 const axios = require('axios');
 const geocoder = require('geocoder');
-const extraPokemons = [1, 2, 3, 4, 5, 6, 7, 25, 26, 31, 34, 38, 45, 50, 58, 63, 64, 65, 68, 66, 74, 79, 83, 84, 85, 88, 89, 93, 102, 103, 104, 105, 109, 110, 111, 115, 122, 123, 128, 130, 132, 141, 142, 143, 144, 145, 146, 147];
+const extraPokemons = [1, 2, 3, 4, 5, 6, 7, 25, 26, 31, 34, 38, 45, 50, 51, 58, 59, 63, 64, 65, 66, 67, 68, 74, 75, 76, 83, 84, 85, 88, 89, 93, 94, 102, 103, 104, 105, 109, 110, 112, 115, 123, 128, 130, 131, 132, 137, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151];
 const alreadyNotified = [];
 
 const PUSHOVER_USERS = process.env['POKEMON_PUSHOVER_USERS'].split(',');
@@ -10,7 +10,8 @@ const PUSHOVER_TOKEN = process.env['POKEMON_PUSHOVER_TOKEN'];
 
 const urls = [
   'https://pokemap.haukur.io/raw_data?pokemon=true&pokestops=true&gyms=false&scanned=false&swLat=64.08783448918172&swLng=-22.10130761988205&neLat=64.1597555893088&neLng=-21.60692285425705&_=1470823652310',
-  'http://10.0.1.10:5000/raw_data?pokemon=true&pokestops=false&gyms=false&scanned=false&spawnpoints=true&swLat=64.13556628031716&swLng=-21.863283640319878&neLat=64.16658924141537&neLng=-21.716856485778862&_=1471625735635'
+  'http://10.0.1.10:5000/raw_data?pokemon=true&pokestops=false&gyms=false&scanned=false&spawnpoints=true&swLat=64.13556628031716&swLng=-21.863283640319878&neLat=64.16658924141537&neLng=-21.716856485778862&_=1471625735635',
+  'http://pogomap.1337.is/raw_data?pokemon=true&pokestops=true&gyms=false&scanned=false&spawnpoints=false&swLat=64.14432707238318&swLng=-21.962561394317618&neLat=64.15208361605599&neLng=-21.925954605682364&_=1471770534668'
   ];
 
 const headers = {
@@ -30,7 +31,7 @@ const getConfig = (url) => {
 function main(config) {
   axios(config).then((response) => {
     response.data.pokemons.map((pokemon) => {
-      if (pokemon.pokemon_rarity === 'Very Rare' || pokemon.pokemon_rarity === 'Ultra Rare' || checkPokemonArray(pokemon.pokemon_id)) {
+      if (checkPokemonArray(pokemon.pokemon_id)) { // pokemon.pokemon_rarity === 'Very Rare' || pokemon.pokemon_rarity === 'Ultra Rare' ||
         console.log('alreadyNotified.indexOf(pokemon.encounter_id)', alreadyNotified.indexOf(pokemon.encounter_id));
         if (alreadyNotified.indexOf(pokemon.encounter_id) < 0) {
           geocoder.reverseGeocode(pokemon.latitude, pokemon.longitude, function ( err, data ) {
