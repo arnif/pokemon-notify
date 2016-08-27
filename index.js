@@ -10,7 +10,7 @@ const PUSHOVER_TOKEN = process.env['POKEMON_PUSHOVER_TOKEN'];
 
 const urls = [
   'https://pokemap.haukur.io/raw_data?pokemon=true&pokestops=true&gyms=false&scanned=false&spawnpoints=false&swLat=64.11540986978804&swLng=-21.975008623144504&neLat=64.1723811007844&neLng=-21.682154314062473&_=1472025782428',
-  'http://10.0.1.10:5000/raw_data?pokemon=true&pokestops=false&gyms=false&scanned=true&spawnpoints=false&swLat=64.1168502403789&swLng=-21.970663154540944&neLat=64.17381851910213&neLng=-21.677808845458912&_=1472247747471',
+  'http://10.0.1.10:5000/raw_data?pokemon=true&pokestops=false&gyms=false&scanned=true&spawnpoints=false&swLat=64.10600945397103&swLng=-21.929121122680726&neLat=64.16299995176239&neLng=-21.636266813598695&_=1472320267611',
   'http://pogomap.1337.is/raw_data?pokemon=true&pokestops=true&gyms=false&scanned=false&spawnpoints=false&swLat=64.10665154548843&swLng=-21.89936854992675&neLat=64.13516075128683&neLng=-21.752941395385733&_=1471977111499'
   ];
 
