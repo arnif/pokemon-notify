@@ -2,7 +2,7 @@ const push = require('pushover-notifications');
 const moment = require('moment');
 const axios = require('axios');
 const geocoder = require('geocoder');
-const extraPokemons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 25, 26, 31, 34, 38, 45, 50, 51, 58, 59, 64, 65, 66, 67, 68, 74, 75, 76, 83, 84, 85, 88, 89, 93, 94, 102, 103, 105, 110, 112, 115, 128, 130, 131, 132, 137, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151];
+const extraPokemons = [1, 2, 3, 4, 5, 6, 8, 9, 25, 26, 31, 34, 38, 45, 50, 51, 59, 62, 65, 67, 68, 75, 76, 83, 85, 88, 89, 94, 102, 103, 105, 110, 112, 115, 128, 130, 131, 132, 137, 139, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151];
 const alreadyNotified = [];
 
 const PUSHOVER_USERS = process.env['POKEMON_PUSHOVER_USERS'].split(',');
