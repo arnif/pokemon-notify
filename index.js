@@ -12,7 +12,7 @@ const urls = [
   'https://pokemap.haukur.io/raw_data?pokemon=true&pokestops=true&gyms=false&scanned=false&spawnpoints=false&swLat=64.11540986978804&swLng=-21.975008623144504&neLat=64.1723811007844&neLng=-21.682154314062473&_=1472025782428',
   'http://10.0.1.10:5000/raw_data?pokemon=true&pokestops=false&gyms=false&scanned=true&spawnpoints=false&swLat=64.10600945397103&swLng=-21.929121122680726&neLat=64.16299995176239&neLng=-21.636266813598695&_=1472320267611',
   'http://pogomap.1337.is/raw_data?pokemon=true&pokestops=true&gyms=false&scanned=false&spawnpoints=false&swLat=64.10665154548843&swLng=-21.89936854992675&neLat=64.13516075128683&neLng=-21.752941395385733&_=1471977111499',
-  'http://hunda.io/raw_data?pokemon=true&pokestops=true&gyms=false&scanned=false&spawnpoints=false&swLat=64.10693212962734&swLng=-21.888996799255438&neLat=64.13544104778424&neLng=-21.742569644714422&_=1472488024011'
+  'http://pokekort.hunda.io/raw_data?pokemon=true&pokestops=true&gyms=false&scanned=false&spawnpoints=false&swLat=64.09294854342731&swLng=-22.02497406747443&neLat=64.1499658079092&neLng=-21.7321197583924&_=1473345885818'
   ];
 
 const headers = {
