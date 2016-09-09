@@ -9,10 +9,10 @@ const PUSHOVER_USERS = process.env['POKEMON_PUSHOVER_USERS'].split(',');
 const PUSHOVER_TOKEN = process.env['POKEMON_PUSHOVER_TOKEN'];
 
 const urls = [
-  'https://pokemap.haukur.io/raw_data?pokemon=true&pokestops=true&gyms=false&scanned=false&spawnpoints=false&swLat=64.11540986978804&swLng=-21.975008623144504&neLat=64.1723811007844&neLng=-21.682154314062473&_=1472025782428',
-  'http://10.0.1.10:5000/raw_data?pokemon=true&pokestops=false&gyms=false&scanned=true&spawnpoints=false&swLat=64.10600945397103&swLng=-21.929121122680726&neLat=64.16299995176239&neLng=-21.636266813598695&_=1472320267611',
-  'http://pogomap.1337.is/raw_data?pokemon=true&pokestops=true&gyms=false&scanned=false&spawnpoints=false&swLat=64.10665154548843&swLng=-21.89936854992675&neLat=64.13516075128683&neLng=-21.752941395385733&_=1471977111499',
-  'http://pokekort.hunda.io/raw_data?pokemon=true&pokestops=true&gyms=false&scanned=false&spawnpoints=false&swLat=64.09294854342731&swLng=-22.02497406747443&neLat=64.1499658079092&neLng=-21.7321197583924&_=1473345885818'
+  'https://pokemap.haukur.io/raw_data?pokemon=true&pokestops=false&gyms=false&scanned=false&spawnpoints=false&swLat=64.07643930614307&swLng=-22.145296709082004&neLat=64.19042456941561&neLng=-21.55958809091794&_=1473462800117',
+  'http://10.0.1.10:5000/raw_data?pokemon=true&pokestops=false&gyms=false&scanned=false&spawnpoints=false&swLat=64.12237880547288&swLng=-21.87109957727057&neLat=64.1508718873807&neLng=-21.724672422729554&_=1473462885549',
+  'http://pogomap.1337.is/raw_data?pokemon=true&pokestops=false&gyms=false&scanned=false&spawnpoints=false&swLat=64.1176070257449&swLng=-22.090685154541006&neLat=64.17457375329944&neLng=-21.797830845458975&_=1473462833737',
+  'http://pokekort.hunda.io/raw_data?pokemon=true&pokestops=true&gyms=false&scanned=false&spawnpoints=false&swLat=64.09109777360946&swLng=-21.993753154541082&neLat=64.14811883077199&neLng=-21.70089884545905&_=1473462863293'
   ];
 
 const headers = {
