@@ -32,9 +32,10 @@ const getConfig = (url) => {
 
 function main(config) {
   axios(config).then((response) => {
+    console.log(`${config.url.split('/')[2]} nr of pokes: ${response.data.pokemons.length}`);
     response.data.pokemons.map((pokemon) => {
       if (checkPokemonArray(pokemon.pokemon_id)) { // pokemon.pokemon_rarity === 'Very Rare' || pokemon.pokemon_rarity === 'Ultra Rare' ||
-        console.log('alreadyNotified.indexOf(pokemon.encounter_id)', alreadyNotified.indexOf(pokemon.encounter_id));
+        console.log(`Found ${pokemon.pokemon_name} (${pokemon.pokemon_id}) ${alreadyNotified.indexOf(pokemon.encounter_id)} encounter_id: ${pokemon.encounter_id} `);
         if (alreadyNotified.indexOf(pokemon.encounter_id) < 0) {
           geocoder.reverseGeocode(pokemon.latitude, pokemon.longitude, function ( err, data ) {
             const location = data.results.length > 0 ? data.results[0].formatted_address : 'Unknown location (swipe to see)';
