@@ -34,9 +34,10 @@ function main(config) {
   axios(config).then((response) => {
     console.log(`${config.url.split('/')[2]} nr of pokes: ${response.data.pokemons.length}`);
     response.data.pokemons.map((pokemon) => {
+      const pokemonPushNotifyId = `${pokemon.encounter_id}_${pokemon.pokemon_id}_${pokemon.disappear_time}`;
       if (checkPokemonArray(pokemon.pokemon_id)) { // pokemon.pokemon_rarity === 'Very Rare' || pokemon.pokemon_rarity === 'Ultra Rare' ||
-        console.log(`Found ${pokemon.pokemon_name} (${pokemon.pokemon_id}) ${alreadyNotified.indexOf(pokemon.encounter_id)} encounter_id: ${pokemon.encounter_id} `);
-        if (alreadyNotified.indexOf(pokemon.encounter_id) < 0) {
+        console.log(`Found ${pokemon.pokemon_name} (${pokemon.pokemon_id}) ${alreadyNotified.indexOf(pokemonPushNotifyId)} pokemonPushNotifyId: ${pokemonPushNotifyId} `);
+        if (alreadyNotified.indexOf(pokemonPushNotifyId) < 0) {
           geocoder.reverseGeocode(pokemon.latitude, pokemon.longitude, function ( err, data ) {
             const location = data.results.length > 0 ? data.results[0].formatted_address : 'Unknown location (swipe to see)';
 
@@ -48,7 +49,7 @@ function main(config) {
             });
             // console.log(message);
 
-            alreadyNotified.push(pokemon.encounter_id); // TODO change to disappear_time
+            alreadyNotified.push(pokemonPushNotifyId); // TODO change to disappear_time
           });
 
 
