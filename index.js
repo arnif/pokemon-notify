@@ -34,7 +34,8 @@ function main(config) {
   axios(config).then((response) => {
     console.log(`${config.url.split('/')[2]} nr of pokes: ${response.data.pokemons.length}`);
     response.data.pokemons.map((pokemon) => {
-      const pokemonPushNotifyId = `${pokemon.encounter_id}_${pokemon.pokemon_id}_${pokemon.disappear_time}`;
+      const date = moment(pokemon.disappear_time).utcOffset(0).format('MM-DD-YYYY')
+      const pokemonPushNotifyId = `${pokemon.encounter_id}_${pokemon.pokemon_id}_${date}`;
       if (checkPokemonArray(pokemon.pokemon_id)) { // pokemon.pokemon_rarity === 'Very Rare' || pokemon.pokemon_rarity === 'Ultra Rare' ||
         console.log(`Found ${pokemon.pokemon_name} (${pokemon.pokemon_id}) ${alreadyNotified.indexOf(pokemonPushNotifyId)} pokemonPushNotifyId: ${pokemonPushNotifyId} `);
         if (alreadyNotified.indexOf(pokemonPushNotifyId) < 0) {
