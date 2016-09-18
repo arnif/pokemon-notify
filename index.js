@@ -2,7 +2,7 @@ const push = require('pushover-notifications');
 const moment = require('moment');
 const axios = require('axios');
 const geocoder = require('geocoder');
-const extraPokemons = [1, 2, 3, 4, 5, 6, 8, 9, 25, 26, 31, 34, 38, 45, 51, 59, 62, 65, 67, 68, 75, 76, 83, 85, 88, 89, 94, 102, 103, 105, 110, 112, 115, 128, 130, 131, 132, 137, 139, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151];
+const extraPokemons = [1, 2, 3, 4, 5, 6, 8, 9, 25, 26, 31, 34, 38, 45, 59, 62, 65, 68, 71, 76, 78, 80, 83, 87, 88, 89, 91, 94, 102, 103, 110, 112, 115, 128, 130, 131, 132, 134, 135, 136, 137, 139, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151];
 const alreadyNotified = [];
 
 const PUSHOVER_USERS = process.env['POKEMON_PUSHOVER_USERS'].split(',');
@@ -10,7 +10,7 @@ const PUSHOVER_TOKEN = process.env['POKEMON_PUSHOVER_TOKEN'];
 
 const urls = [
   'https://pokemap.haukur.io/raw_data?pokemon=true&pokestops=false&gyms=false&scanned=false&spawnpoints=false&swLat=64.07643930614307&swLng=-22.145296709082004&neLat=64.19042456941561&neLng=-21.55958809091794&_=1473462800117',
-  'http://pogomap.1337.is/raw_data?pokemon=true&pokestops=false&gyms=false&scanned=false&spawnpoints=false&swLat=64.08650585902984&swLng=-22.355816151245108&neLat=64.31392710820194&neLng=-21.184398914916983&_=1473865801420',
+  'http://pogomap.1337.is/raw_data?pokemon=true&pokestops=false&gyms=false&scanned=false&spawnpoints=false&swLat=63.98590428554631&swLng=-22.784883762939444&neLat=64.44052476295313&neLng=-20.442049290283194&_=1474217065177',
   'http://pokekort.hunda.io/raw_data?pokemon=true&pokestops=true&gyms=false&scanned=false&spawnpoints=false&swLat=64.09109777360946&swLng=-21.993753154541082&neLat=64.14811883077199&neLng=-21.70089884545905&_=1473462863293'
   ];
 
