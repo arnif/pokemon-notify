@@ -122,6 +122,5 @@ const tweetPokemon = (text, latitude, longitude) => {
       return;
     }
     console.log('tweet', tweet);  // Tweet body.
-    console.log('response', response);  // Raw response object.
   });
 };
