@@ -2,11 +2,19 @@ const push = require('pushover-notifications');
 const moment = require('moment');
 const axios = require('axios');
 const geocoder = require('geocoder');
-const extraPokemons = [1, 2, 3, 4, 5, 6, 8, 9, 26, 31, 34, 38, 45, 59, 62, 65, 68, 71, 76, 78, 80, 83, 87, 89, 94, 103, 110, 112, 115, 128, 130, 131, 132, 134, 135, 136, 137, 139, 141, 142, 143, 144, 145, 146, 148, 149, 150, 151];
+const Twitter = require('twitter');
+const extraPokemons = [3, 5, 6, 9, 26, 31, 34, 36, 38, 40, 45, 59, 62, 65, 68, 71, 76, 78, 80, 83, 89, 94, 103, 110, 112, 113, 115, 128, 130, 131, 132, 134, 135, 136, 137, 139, 141, 142, 143, 144, 145, 146, 149, 150, 151];
 const alreadyNotified = [];
 
 const PUSHOVER_USERS = process.env['POKEMON_PUSHOVER_USERS'].split(',');
 const PUSHOVER_TOKEN = process.env['POKEMON_PUSHOVER_TOKEN'];
+
+var client = new Twitter({
+  consumer_key: process.env.TWITTER_CONSUMER_KEY,
+  consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+  access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
+  access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
+});
 
 const urls = [
   'https://pokemap.haukur.io/raw_data?pokemon=true&pokestops=false&gyms=false&scanned=false&spawnpoints=false&swLat=64.07643930614307&swLng=-22.145296709082004&neLat=64.19042456941561&neLng=-21.55958809091794&_=1473462800117',
@@ -44,10 +52,11 @@ function main(config) {
             const disapears = moment(pokemon.disappear_time).utcOffset(0).format('HH:mm:ss');
 
             const message = `${pokemon.pokemon_name} is somewhere! Disappears at: ${disapears} @ ${location}`;
-            PUSHOVER_USERS.forEach((user) => {
-              sendNotification(user, message, pokemon.latitude, pokemon.longitude);
-            });
+            // PUSHOVER_USERS.forEach((user) => {
+            //   sendNotification(user, message, pokemon.latitude, pokemon.longitude);
+            // });
             // console.log(message);
+            tweetPokemon(message, pokemon.latitude, pokemon.longitude);
 
             alreadyNotified.push(pokemonPushNotifyId); // TODO change to disappear_time
           });
@@ -102,5 +111,17 @@ const sendNotification = (user, text, latitude, longitude) => {
       }
       resolve(results);
     });
+  });
+};
+
+const tweetPokemon = (text, latitude, longitude) => {
+  const url = `http://maps.google.com/maps?saddr=&daddr=${latitude},${longitude}&directionsmode=driving`;
+  client.post('statuses/update', {status: `${text} ${url}`, lat: parseFloat(latitude), long: parseFloat(longitude), display_coordinates: true},  function(error, tweet, response) {
+    if(error) {
+      console.log('error', error);
+      return;
+    }
+    console.log('tweet', tweet);  // Tweet body.
+    console.log('response', response);  // Raw response object.
   });
 };
