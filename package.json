@@ -12,6 +12,7 @@
     "axios": "^0.13.1",
     "geocoder": "^0.2.2",
     "moment": "^2.14.1",
-    "pushover-notifications": "^0.2.3"
+    "pushover-notifications": "^0.2.3",
+    "twitter": "^1.4.0"
   }
 }
