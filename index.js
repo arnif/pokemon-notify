@@ -3,7 +3,7 @@ const moment = require('moment');
 const axios = require('axios');
 const geocoder = require('geocoder');
 const Twitter = require('twitter');
-const extraPokemons = [3, 5, 6, 9, 26, 31, 34, 36, 38, 40, 45, 59, 62, 65, 68, 71, 76, 78, 80, 83, 89, 94, 103, 110, 112, 113, 115, 128, 130, 131, 132, 134, 135, 136, 137, 139, 141, 142, 143, 144, 145, 146, 149, 150, 151];
+const extraPokemons = [3, 6, 9, 26, 31, 34, 38, 45, 59, 62, 65, 68, 71, 76, 78, 80, 83, 89, 94, 103, 110, 112, 113, 115, 128, 130, 131, 132, 134, 135, 136, 137, 139, 141, 142, 143, 144, 145, 146, 149, 150, 151];
 const alreadyNotified = [];
 
 const PUSHOVER_USERS = process.env['POKEMON_PUSHOVER_USERS'].split(',');
@@ -19,44 +19,47 @@ var client = new Twitter({
 const urls = [
   // 'https://pokemap.haukur.io/raw_data?pokemon=true&pokestops=false&gyms=false&scanned=false&spawnpoints=false&swLat=64.07643930614307&swLng=-22.145296709082004&neLat=64.19042456941561&neLng=-21.55958809091794&_=1473462800117',
   // 'http://pogomap.1337.is/raw_data?pokemon=true&pokestops=false&gyms=false&scanned=false&spawnpoints=false&swLat=63.98590428554631&swLng=-22.784883762939444&neLat=64.44052476295313&neLng=-20.442049290283194&_=1474217065177',
-  'http://pokekort.hunda.io/raw_data?pokemon=true&pokestops=true&gyms=false&scanned=false&spawnpoints=false&swLat=64.09109777360946&swLng=-21.993753154541082&neLat=64.14811883077199&neLng=-21.70089884545905&_=1473462863293'
+  // 'http://pokekort.hunda.io/raw_data?pokemon=true&pokestops=true&gyms=false&scanned=false&spawnpoints=false&swLat=64.09109777360946&swLng=-21.993753154541082&neLat=64.14811883077199&neLng=-21.70089884545905&_=1473462863293'
+  'http://instinct.hunda.io/data',
   ];
 
-const headers = {
-  Accept: 'application/json',
-  'Content-Type': 'application/json',
-  'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36', // eslint-disable-line
-  'Accept-Encoding': 'gzip, deflate, sdch, br'
-};
+// const headers = {
+//   Accept: 'application/json',
+//   'Content-Type': 'application/json',
+//   'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36', // eslint-disable-line
+//   'Accept-Encoding': 'gzip, deflate, sdch, br'
+// };
 
 const getConfig = (url) => {
   return {
-    headers,
+    // headers,
     method: 'GET',
     url,
   };
 };
 
 function main(config) {
+  // console.log('config', config);
   axios(config).then((response) => {
-    console.log(`${config.url.split('/')[2]} nr of pokes: ${response.data.pokemons.length}`);
-    response.data.pokemons.map((pokemon) => {
+    const pokes = response.data.filter((d) => d.type === 'pokemon');
+    // console.log('pokse', pokes);
+    console.log(`${config.url.split('/')[2]} nr of pokes: ${pokes.length}`);
+    pokes.map((pokemon) => {
       const date = moment(pokemon.disappear_time).utcOffset(0).format('MM-DD-YYYY')
-      const pokemonPushNotifyId = `${pokemon.encounter_id}_${pokemon.pokemon_id}_${date}`;
+      const pokemonPushNotifyId = `${pokemon.id}_${pokemon.pokemon_id}_${date}`;
       if (checkPokemonArray(pokemon.pokemon_id)) { // pokemon.pokemon_rarity === 'Very Rare' || pokemon.pokemon_rarity === 'Ultra Rare' ||
-        console.log(`Found ${pokemon.pokemon_name} (${pokemon.pokemon_id}) ${alreadyNotified.indexOf(pokemonPushNotifyId)} pokemonPushNotifyId: ${pokemonPushNotifyId} `);
+        console.log(`Found ${pokemon.name} (${pokemon.pokemon_id}) ${alreadyNotified.indexOf(pokemonPushNotifyId)} pokemonPushNotifyId: ${pokemonPushNotifyId} `);
         if (alreadyNotified.indexOf(pokemonPushNotifyId) < 0) {
-          geocoder.reverseGeocode(pokemon.latitude, pokemon.longitude, function ( err, data ) {
+          geocoder.reverseGeocode(pokemon.lat, pokemon.lon, function ( err, data ) {
             const location = data.results.length > 0 ? data.results[0].formatted_address : 'Unknown location (swipe to see)';
+            const disapears = moment(moment.unix(pokemon.expires_at).format()).utcOffset(0).format('HH:mm:ss');
 
-            const disapears = moment(pokemon.disappear_time).utcOffset(0).format('HH:mm:ss');
-
-            const message = `${pokemon.pokemon_name} is somewhere! Disappears at: ${disapears} @ ${location}`;
+            const message = `${pokemon.name} is somewhere! Disappears at: ${disapears} @ ${location}`;
             // PUSHOVER_USERS.forEach((user) => {
             //   sendNotification(user, message, pokemon.latitude, pokemon.longitude);
             // });
             // console.log(message);
-            tweetPokemon(message, pokemon.latitude, pokemon.longitude);
+            tweetPokemon(message, pokemon.lat, pokemon.lon);
 
             alreadyNotified.push(pokemonPushNotifyId); // TODO change to disappear_time
           });
