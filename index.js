@@ -4,7 +4,7 @@ const axios = require('axios');
 const geocoder = require('geocoder');
 const Twitter = require('twitter'); // TODO add  113 (chansey) and 137 (Porygon) again after the valentine event
 const gen1 = [3, 6, 9, 26, 31, 34, 38, 45, 59, 62, 65, 68, 71, 76, 78, 83, 89, 94, 103, 112, 113, 115, 128, 130, 131, 132, 134, 135, 136, 137, 139, 141, 142, 143, 144, 145, 146, 149, 150, 151];
-const gen2 = [154, 157, 160, 181, 181, 182, 186, 189, 196, 197, 202, 205, 208, 210, 212, 214, 217, 226, 227, 230, 232, 233, 242, 243, 244, 245, 248, 248, 249, 250, 251];
+const gen2 = [154, 157, 160, 181, 181, 182, 186, 189, 196, 197, 205, 208, 210, 212, 214, 226, 227, 230, 232, 233, 242, 243, 244, 245, 248, 248, 249, 250, 251];
 const alreadyNotified = [];
 
 const extraPokemons = [...gen1, ...gen2];
