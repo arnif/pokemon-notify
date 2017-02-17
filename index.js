@@ -2,9 +2,12 @@ const push = require('pushover-notifications');
 const moment = require('moment');
 const axios = require('axios');
 const geocoder = require('geocoder');
-const Twitter = require('twitter');
-const extraPokemons = [3, 6, 9, 26, 31, 34, 38, 45, 59, 62, 65, 68, 71, 76, 78, 80, 83, 89, 94, 103, 110, 112, 113, 115, 128, 130, 131, 132, 134, 135, 136, 137, 139, 141, 142, 143, 144, 145, 146, 149, 150, 151];
+const Twitter = require('twitter'); // TODO add  113 (chansey) and 137 (Porygon) again after the valentine event
+const gen1 = [3, 6, 9, 26, 31, 34, 38, 45, 59, 62, 65, 68, 71, 76, 78, 83, 89, 94, 103, 112, 115, 128, 130, 131, 132, 134, 135, 136, 139, 141, 142, 143, 144, 145, 146, 149, 150, 151];
+const gen2 = [154, 157, 160, 181, 182, 184, 186, 189,  196, 197, 199, 202, 203, 208, 210,  212, 217, 219, 221, 224, 227, 229, 232, 233, 237, 242, 243, 244, 245, 248, 249, 250, 251];
 const alreadyNotified = [];
+
+const extraPokemons = [...gen1, ...gen2];
 
 const PUSHOVER_USERS = process.env['POKEMON_PUSHOVER_USERS'].split(',');
 const PUSHOVER_TOKEN = process.env['POKEMON_PUSHOVER_TOKEN'];
@@ -20,7 +23,8 @@ const urls = [
   // 'https://pokemap.haukur.io/raw_data?pokemon=true&pokestops=false&gyms=false&scanned=false&spawnpoints=false&swLat=64.07643930614307&swLng=-22.145296709082004&neLat=64.19042456941561&neLng=-21.55958809091794&_=1473462800117',
   // 'http://pogomap.1337.is/raw_data?pokemon=true&pokestops=false&gyms=false&scanned=false&spawnpoints=false&swLat=63.98590428554631&swLng=-22.784883762939444&neLat=64.44052476295313&neLng=-20.442049290283194&_=1474217065177',
   // 'http://pokekort.hunda.io/raw_data?pokemon=true&pokestops=true&gyms=false&scanned=false&spawnpoints=false&swLat=64.09109777360946&swLng=-21.993753154541082&neLat=64.14811883077199&neLng=-21.70089884545905&_=1473462863293'
-  'http://instinct.hunda.io/data',
+  // 'http://instinct.hunda.io/data',
+      'http://pokekort.hunda.io/data',
   ];
 
 // const headers = {
@@ -41,7 +45,9 @@ const getConfig = (url) => {
 function main(config) {
   // console.log('config', config);
   axios(config).then((response) => {
-    const pokes = response.data.filter((d) => d.type === 'pokemon');
+	//console.log(response);
+    //const pokes = response.data.filter((d) => d.type === 'pokemon');
+    const pokes = response.data;
     // console.log('pokse', pokes);
     console.log(`${config.url.split('/')[2]} nr of pokes: ${pokes.length}`);
     pokes.map((pokemon) => {
